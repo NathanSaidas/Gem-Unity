@@ -16,7 +16,9 @@ namespace Gem
         "The path given was invalid.",
         "Removed multiple instances of an item. Possible error?",
         "Cannot save or load while saving or loading.",
-        "Invalid file version for item database."
+        "Invalid file version for item database.",
+        "Missing team for saving, using default data.",
+        "Missing team for loading.",
     };
 
         public static string GetError(int aCode)
@@ -50,6 +52,8 @@ namespace Gem
         ITEM_MULTIPLE_REMOVED_INSTANCES,
         ITEM_CANNOT_SAVE_LOAD,
         ITEM_INVALID_FILE_VERSION,
+        TEAM_MISSING_TEAM_FOR_SAVE,
+        TEAM_MISSING_TEAM_FOR_LOAD
 
     }
 }
