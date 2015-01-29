@@ -184,6 +184,11 @@ namespace Gem
             instance.ConsoleLogError(aMessage.ToString());
 #endif
         }
+
+        public static void MultipleInstances<T>()
+        {
+            LogError(DebugConstants.GetError(ErrorCode.SINGLETON_MULTIPLE_INSTANCE) + typeof(T).Name);
+        }
         #endregion
 
         void OnDrawConsole()

@@ -19,6 +19,7 @@ namespace Gem
         "Invalid file version for item database.",
         "Missing team for saving, using default data.",
         "Missing team for loading.",
+        "Multiple Instances Of Class Not Allowed: ",
     };
 
         public static string GetError(int aCode)
@@ -53,7 +54,8 @@ namespace Gem
         ITEM_CANNOT_SAVE_LOAD,
         ITEM_INVALID_FILE_VERSION,
         TEAM_MISSING_TEAM_FOR_SAVE,
-        TEAM_MISSING_TEAM_FOR_LOAD
+        TEAM_MISSING_TEAM_FOR_LOAD,
+        SINGLETON_MULTIPLE_INSTANCE
 
     }
 }

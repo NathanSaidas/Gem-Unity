@@ -19,6 +19,7 @@ namespace Gem
         /// <summary>
         /// A struct to define the name of the player.
         /// </summary>
+        [SerializeField]
         private PlayerName m_Name = new PlayerName(string.Empty, string.Empty);
         /// <summary>
         /// A struct to define the team of the player.

@@ -63,7 +63,7 @@ namespace Gem
             if(!SetInstance(this))
             {
                 Destroy(this);
-                DebugUtils.LogError("Multiple Actor Managers in the scene.");
+                DebugUtils.MultipleInstances<ActorManager>();
                 return;
             }
             DontDestroyOnLoad(gameObject);
