@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 #region CHANGE LOG
-/* December, 7, 2014 - Nathan Hanlan - Added Class
- * December, 9, 2014 - Nathan Hanlan - OnDrawConsole is now getting called by OnGUI appropriately.
+/*  December, 7, 2014 - Nathan Hanlan - Added Class
+ *  December, 9, 2014 - Nathan Hanlan - OnDrawConsole is now getting called by OnGUI appropriately.
+ *  January, 29, 2015 - Nathan Hanlan - Added Exception Logging and Singleton MultipleInstance logging.
  */
 #endregion
 
@@ -182,6 +184,14 @@ namespace Gem
             UnityEngine.Debug.LogError(aMessage.ToString());
 #else
             instance.ConsoleLogError(aMessage.ToString());
+#endif
+        }
+        public static void LogException(Exception aException)
+        {
+#if UNITY_EDITOR
+            UnityEngine.Debug.LogException(aException);
+#else
+            
 #endif
         }
 

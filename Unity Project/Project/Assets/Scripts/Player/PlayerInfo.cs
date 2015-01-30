@@ -1,10 +1,12 @@
 ﻿#region CHANGE LOG
 /*  January, 28, 2015 - Nathan Hanlan - Added class PlayerInfo. (Restructured for Gem. Taken from Parrador GGJ Framework).
- * 
+ *  January, 29, 2015 - Nathan Hanlan - Completed TODO: Implemented Network Serialization with INetworkSendable interface
  */
 #endregion
 // -- System
 using System;
+using System.IO;
+using System.Runtime.Serialization;
 // -- Unity
 using UnityEngine;
 
@@ -12,7 +14,7 @@ using UnityEngine;
 namespace Gem
 {
     [Serializable]
-    public class PlayerInfo
+    public class PlayerInfo : INetworkSendable
     {
         // -- Custom Info
 
@@ -89,6 +91,49 @@ namespace Gem
         }
 
         //TODO: Create Serialize / Deserize methods for a memory stream.
+        public void OnSend(Stream aStream, IFormatter aFormatter)
+        {
+            m_Name.OnSend(aStream, aFormatter);
+            m_Team.OnSend(aStream, aFormatter);
+            aFormatter.Serialize(aStream, m_TradeMask);
+            aFormatter.Serialize(aStream, m_ControlMask);
+            aFormatter.Serialize(aStream, m_IsAI);
+            aFormatter.Serialize(aStream, m_ExternalIP);
+            aFormatter.Serialize(aStream, m_ExternalPort);
+            aFormatter.Serialize(aStream, m_Guid);
+            aFormatter.Serialize(aStream, m_IpAddress);
+            aFormatter.Serialize(aStream, m_Port);
+        }
+        public bool OnReceive(Stream aStream, IFormatter aFormatter)
+        {
+            
+            if(!m_Name.OnReceive(aStream, aFormatter))
+            {
+                return false;
+            }
+           
+            if(!m_Team.OnReceive(aStream, aFormatter))
+            {
+                return false;
+            }
+            try
+            {
+                m_TradeMask = (PlayerIndex)aFormatter.Deserialize(aStream);
+                m_ControlMask = (PlayerIndex)aFormatter.Deserialize(aStream);
+                m_IsAI = (bool)aFormatter.Deserialize(aStream);
+                m_ExternalIP = (string)aFormatter.Deserialize(aStream);
+                m_ExternalPort = (int)aFormatter.Deserialize(aStream);
+                m_Guid = (string)aFormatter.Deserialize(aStream);
+                m_IpAddress = (string)aFormatter.Deserialize(aStream);
+                m_Port = (int)aFormatter.Deserialize(aStream);
+                return true;
+            }
+            catch(Exception aException)
+            {
+                Debug.LogException(aException);
+                return false;
+            }
+        }
 
         /// <summary>
         /// Converts a NetworkPlayer to PlayerInfo class.

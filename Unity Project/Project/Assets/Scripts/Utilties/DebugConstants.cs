@@ -20,6 +20,8 @@ namespace Gem
         "Missing team for saving, using default data.",
         "Missing team for loading.",
         "Multiple Instances Of Class Not Allowed: ",
+        "Call made for Server was made on a Client",
+        "Call made for Client was made on a Server",
     };
 
         public static string GetError(int aCode)
@@ -55,7 +57,8 @@ namespace Gem
         ITEM_INVALID_FILE_VERSION,
         TEAM_MISSING_TEAM_FOR_SAVE,
         TEAM_MISSING_TEAM_FOR_LOAD,
-        SINGLETON_MULTIPLE_INSTANCE
-
+        SINGLETON_MULTIPLE_INSTANCE,
+        NETWORK_SERVER_CALL_ON_CLIENT,
+        NETWORK_CLIENT_CALL_ON_SERVER
     }
 }

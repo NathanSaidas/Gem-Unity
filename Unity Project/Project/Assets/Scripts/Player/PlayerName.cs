@@ -1,11 +1,13 @@
 ﻿#region CHANGE LOG
 /*  January, 28, 2015 - Nathan Hanlan - Added file/class - PlayerName
- * 
+ *  January, 29, 2015 - Nathan Hanlan - Added/Implemented INetworkSendable interface. This object may now be transported over the network.
  */
 #endregion
 
 // -- System
 using System; //Serializable
+using System.IO;
+using System.Runtime.Serialization;
 // -- Unity
 using UnityEngine; //SerializeField
 
@@ -13,7 +15,7 @@ using UnityEngine; //SerializeField
 namespace Gem
 {
     [Serializable]
-    public struct PlayerName
+    public struct PlayerName : INetworkSendable
     {
         /// <summary>
         /// The username to identify the player through chat and other various commands
@@ -44,6 +46,29 @@ namespace Gem
             m_PlayerIndex = aPlayerIndex;
         }
 
+        public void OnSend(Stream aStream, IFormatter aFormatter)
+        {
+            aFormatter.Serialize(aStream, m_Username);
+            aFormatter.Serialize(aStream, m_ScreenName);
+            aFormatter.Serialize(aStream, m_PlayerIndex);
+        }
+
+        public bool OnReceive(Stream aStream, IFormatter aFormatter)
+        {
+            try
+            {
+                m_Username = (string)aFormatter.Deserialize(aStream);
+                m_ScreenName = (string)aFormatter.Deserialize(aStream);
+                m_PlayerIndex = (PlayerIndex)aFormatter.Deserialize(aStream);
+                return true;
+            }
+            catch(Exception aException)
+            {
+                DebugUtils.LogException(aException);
+                return false;
+            }
+        }
+
         public string username
         {
             get { return m_Username; }
@@ -59,5 +84,7 @@ namespace Gem
             get { return m_PlayerIndex; }
             set { m_PlayerIndex = value; }
         }
+
+        
     }
 }

@@ -60,6 +60,8 @@ namespace Gem
         public const int INVALID_INT = -1;                                              ///Added December,7,2014 - Nathan Hanlan
         public const float INVALID_FLOAT = -1.0f;                                       ///Added December,7,2014 - Nathan Hanlan
         public const string INVALID_STRING = null;                                      ///Added December,7,2014 - Nathan Hanlan
+                                                                                        ///
+
         public const string GAME_OBJECT_PERSISTENT = "_Persistent";                      ///Added December,7,2014 - Nathan Hanlan
                                                        
         ///The name of the field OnUse in items.                          
@@ -71,5 +73,11 @@ namespace Gem
 
         public const int MAX_PLAYERS = 8;
         public const int MAX_TEAMS = 8;
+
+        public const string TEAM_ANCIENTS = "Ancients";
+        public const string TEAM_CITIZENS = "Citizens";
+        public const TeamIndex TEAM_ANCIENTS_INDEX = TeamIndex.Team_One;
+        public const TeamIndex TEAM_CITIZENS_INDEX = TeamIndex.Team_Two;
+
     }
 }

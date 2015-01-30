@@ -24,7 +24,8 @@ namespace Gem
         }
 
         private PlayerInfo m_CurrentPlayer = null;
-
+        private string m_LocalUsername = string.Empty;
+        private string m_LocalPassword = string.Empty;
         
 
         public PlayerInfo currentPlayer
@@ -32,6 +33,19 @@ namespace Gem
             get { return m_CurrentPlayer; }
             set { m_CurrentPlayer = value; }
         }
+
+        public string localUsername
+        {
+            get { return m_LocalUsername; }
+            set { m_LocalUsername = value; }
+        }
+
+        public string localPassword
+        {
+            get { return m_LocalPassword; }
+            set { m_LocalPassword = value; }
+        }
+
     }
 
 }
