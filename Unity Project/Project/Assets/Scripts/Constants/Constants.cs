@@ -70,6 +70,7 @@ namespace Gem
 
         public const string GAME_OBJECT_ACTOR_MANAGER = "_ActorManager";
         public const string GAME_OBJECT_GAME = "_Game";
+        public const string GAME_OBJECT_DEBUG = "_Debug";
 
         public const int MAX_PLAYERS = 8;
         public const int MAX_TEAMS = 8;

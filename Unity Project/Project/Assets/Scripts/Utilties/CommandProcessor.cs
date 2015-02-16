@@ -1,6 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿// -- System
 using System.Collections.Generic;
+// -- Unity
+using UnityEngine;
+
 #region CHANGE LOG
 /* December, 7, 2014 - Nathan Hanlan - Added interface ICommandProcessor and class CommandProcessor
  * 

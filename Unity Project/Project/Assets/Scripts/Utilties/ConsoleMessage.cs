@@ -6,6 +6,9 @@
 
 namespace Gem
 {
+    /// <summary>
+    /// Describes the king of log level the console should display.
+    /// </summary>
     public enum LogLevel
     {
         Log,

@@ -1,16 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AbilityType : MonoBehaviour 
+namespace Gem
 {
+    public enum AbilityType
+    {
+        Self,
+        SelfAura,
+        Target,
+        TargetSplash,
+        SelfToTarget,
+        SelfToTargetDestroyUponCollision,
+        WorldPoint,
+        WorldPointSplash,
+        WorldPointDirection,
+        WorldPointDirectionalSplash,
+        SelfToWorldPoint,
+        SelfToWorldPointDestroyUponCollision
+    }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
+

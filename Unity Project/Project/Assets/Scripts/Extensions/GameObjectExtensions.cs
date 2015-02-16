@@ -14,10 +14,27 @@ namespace Gem
     {
         public static class GameObjectExtensions
         {
+            /// <summary>
+            /// Spawns a gameobject at position (0,0,0) and rotation (0,0,0)
+            /// Searches for Sibling IActors of the GameObject and the Children IActors of the GameObject
+            /// and invokes InitializeActor
+            /// </summary>
+            /// <param name="aObject">The object to clone.</param>
+            /// <returns>Returns the cloned gameobject</returns>
             public static GameObject InstantiateActor(GameObject aObject)
             {
                 return InstantiateActor(aObject, Vector3.zero, Quaternion.identity);
             }
+            
+            /// <summary>
+            /// Spawns a gameobject at the given position and rotation.
+            /// Searches for Sibling IActors of the GameObject and the Children IActors of the GameObject
+            /// and invokes InitializeActor
+            /// </summary>
+            /// <param name="aObject">The object to clone.</param>
+            /// <param name="aPosition">The position to place the object.</param>
+            /// <param name="aRotation">The rotation to place the object.</param>
+            /// <returns>Returns the cloned gameobject.</returns>
             public static GameObject InstantiateActor(GameObject aObject, Vector3 aPosition, Quaternion aRotation)
             {
                 GameObject gameobject = GameObject.Instantiate(aObject, aPosition, aRotation) as GameObject;

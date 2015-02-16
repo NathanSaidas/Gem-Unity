@@ -23,7 +23,7 @@ namespace Gem
         /// Retrieves the type of actor this is.
         /// </summary>
         /// <returns></returns>
-        ActorIdentifier GetActorType();
+        ActorIdentifier GetActorIdentifier();
         /// <summary>
         /// Returns a reference to a game object this interface is being managed by.
         /// </summary>
@@ -32,11 +32,6 @@ namespace Gem
         /// Returns true if the object is considered alive.
         /// </summary>
         bool IsObjectAlive();
-        /// <summary>
-        /// Invokes 
-        /// </summary>
-        /// <param name="aActor"></param>
-        void Destroy();
         /// <summary>
         /// A method to initialize the actor when being instantiated.
         /// </summary>

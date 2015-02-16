@@ -20,8 +20,25 @@ namespace Gem
         "Missing team for saving, using default data.",
         "Missing team for loading.",
         "Multiple Instances Of Class Not Allowed: ",
+
+#region NETWORK
         "Call made for Server was made on a Client",
         "Call made for Client was made on a Server",
+#endregion
+
+#region ACTOR
+        "Actor manager registering multiple of the same key ",
+        "Actor manager cannot register an invalid key. (Null or Empty) ",
+#endregion
+
+#region COROUTINE
+        "Coroutine has not been initialized. Call CoroutineEx.InitializeCoroutineExtensions",
+#endregion
+
+#region ABILITY
+        "Cannot cast ability, ability is on cooldown.",
+        "Cannot cast ability, invalid target.",
+#endregion
     };
 
         public static string GetError(int aCode)
@@ -58,7 +75,23 @@ namespace Gem
         TEAM_MISSING_TEAM_FOR_SAVE,
         TEAM_MISSING_TEAM_FOR_LOAD,
         SINGLETON_MULTIPLE_INSTANCE,
+        #region NETWORK
         NETWORK_SERVER_CALL_ON_CLIENT,
-        NETWORK_CLIENT_CALL_ON_SERVER
+        NETWORK_CLIENT_CALL_ON_SERVER,
+        #endregion
+
+        #region ACTOR
+        ACTOR_MULTIPLE_SAME_KEY,
+        ACTOR_INVALID_KEY,
+        #endregion
+
+        #region COROUTINE
+        COROUTINE_NOT_INITIALIZED,
+        #endregion
+
+        #region ABILITY
+        CAST_FAILED_COOLDOWN,
+        CAST_FAILED_INVALID_TARGET,
+        #endregion
     }
 }

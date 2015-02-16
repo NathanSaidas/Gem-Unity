@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// -- Gem
+using Gem.Coroutines;
+
 namespace Gem
 {
     /// <summary>
@@ -56,7 +59,11 @@ namespace Gem
         }
         #endregion
 
+
         private Queue<IActor> m_GarbageQueue = new Queue<IActor>();
+        private Dictionary<string, Actor> m_Actors = new Dictionary<string, Actor>();
+
+        public int m_QueueSize = 0;
 
         private void Awake()
         {
@@ -77,10 +84,11 @@ namespace Gem
 
         private void Update()
         {
-            StartCoroutine(DestroyObjects());
+            m_QueueSize = m_GarbageQueue.Count;
+            StartCoroutine(Collect());
         }
 
-        private IEnumerator DestroyObjects()
+        private IEnumerator Collect()
         {
             yield return new WaitForEndOfFrame();
             while(m_GarbageQueue.Count > 0)
@@ -91,7 +99,12 @@ namespace Gem
                     GameObject goActor = actor.GetGameObject();
                     if(goActor != null)
                     {
+                        Debug.Log("Destroying: " + goActor);
                         Destroy(goActor);
+                    }
+                    else
+                    {
+                        Debug.Log("Missing GameObject");
                     }
                 }
             }
@@ -104,13 +117,90 @@ namespace Gem
         /// <param name="aActor">The actor to destroy.</param>
         public static void Destroy(IActor aActor)
         {
-            if(aActor != null && aActor.IsObjectAlive())
+            bool isNull = aActor == null;
+
+
+            if(!isNull && aActor.IsObjectAlive())
             {
                 ActorManager manager = ActorManager.instance;
                 if(manager != null)
                 {
                     manager.m_GarbageQueue.Enqueue(aActor);
-                    aActor.FinalizeActor();
+                }
+            }
+            else
+            {
+                Debug.Log("Bad Object");
+            }
+        }
+
+        public static void Destroy(Actor aActor)
+        {
+            bool isNull = aActor == null;
+
+
+            if (!isNull && aActor.IsObjectAlive())
+            {
+                ActorManager manager = ActorManager.instance;
+                if (manager != null)
+                {
+                    manager.m_GarbageQueue.Enqueue(aActor);
+                }
+            }
+            else
+            {
+                Debug.Log("Bad Object");
+            }
+        }
+
+        /// <summary>
+        /// Registers a Actor into the Actor Manager. 
+        /// An actor with an invalid key, (null or empty) cannot be registered
+        /// An actor whos key already exists is not recommended and will create an error. But it is allowed.
+        /// </summary>
+        /// <param name="aActor">The Actor to register</param>
+        public static void RegisterActor(Actor aActor)
+        {
+            if(aActor != null)
+            {
+                ///Check String
+                if(string.IsNullOrEmpty(aActor.actorKey))
+                {
+                    DebugUtils.LogError(DebugConstants.GetError(ErrorCode.ACTOR_INVALID_KEY) + aActor.GetActorName(), LogVerbosity.LevelThree);
+                    return;
+                }
+                ActorManager manager = ActorManager.instance;
+                if(manager != null)
+                {
+                    ///Check Key Exist
+                    if(manager.m_Actors.ContainsKey(aActor.actorKey))
+                    {
+                        DebugUtils.LogError(DebugConstants.GetError(ErrorCode.ACTOR_MULTIPLE_SAME_KEY) + aActor.actorKey);
+                    }
+                    manager.m_Actors.Add(aActor.actorKey, aActor);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unregisters a Actor from the Actor Manager.
+        /// </summary>
+        /// <param name="aActor">The actor to Unregister.</param>
+        public static void UnregisterActor(Actor aActor)
+        {
+            if(aActor != null)
+            {
+                ///Check String
+                if(string.IsNullOrEmpty(aActor.actorKey))
+                {
+                    DebugUtils.LogError(DebugConstants.GetError(ErrorCode.ACTOR_INVALID_KEY) + aActor.GetActorName(), LogVerbosity.LevelThree);
+                    return;
+                }
+
+                ActorManager manager = ActorManager.instance;
+                if(manager != null)
+                {
+                    manager.m_Actors.Remove(aActor.actorKey);
                 }
             }
         }

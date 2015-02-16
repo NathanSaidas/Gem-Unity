@@ -15,6 +15,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 
+// -- Gem
+using Gem.Coroutines;
+
 
 #region NETWORK TODO LIST
 /* --- TODO: Add Unregister Functionality.
@@ -44,6 +47,25 @@ namespace Gem
         {
             get { return m_IsQuitting; }
         }
+
+        #region COROUTINE EX METHODS
+
+        public static void StartCoroutineEx(IEnumerator<YieldInstruction> aCoroutine)
+        {
+            if(aCoroutine != null && instance != null)
+            {
+                instance.StartCoroutine(aCoroutine);
+            }
+        }
+        public static void StopCoroutineEx(IEnumerator<YieldInstruction> aCoroutine)
+        {
+            if(aCoroutine != null && instance != null)
+            {
+                instance.StopCoroutine(aCoroutine);
+            }
+        }
+
+        #endregion
 
         #region SINGLETON IMPLEMENTATION
         private static Game s_Instance = null;
@@ -118,6 +140,8 @@ namespace Gem
                 return;
             }
             DontDestroyOnLoad(gameObject);
+
+            CoroutineEx.InitializeCoroutineExtensions(StartCoroutineEx, StopCoroutineEx);
         }
 
         private void OnDestroy()
