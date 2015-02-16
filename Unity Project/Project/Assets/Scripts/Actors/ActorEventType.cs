@@ -11,6 +11,9 @@ namespace Gem
         Select,
         Deselect,
         AbilityEffect,
-
+        IssueOrderStop,
+        IssueOrderMove,
+        IssueOrderFollow,
+        IssueOrderWarp,
     }
 }

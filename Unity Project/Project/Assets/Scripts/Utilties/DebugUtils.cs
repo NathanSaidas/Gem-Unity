@@ -401,6 +401,11 @@ namespace Gem
         {
             LogError(DebugConstants.GetError(ErrorCode.SINGLETON_MULTIPLE_INSTANCE) + typeof(T).Name);
         }
+
+        public static void MissingProperty<T>(string aPropertyName)
+        {
+            LogError("Missing Property(" + typeof(T).Name + ") with the name of " + aPropertyName + ".");
+        }
         #endregion
 
         /// <summary>
