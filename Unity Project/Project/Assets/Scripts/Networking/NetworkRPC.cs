@@ -11,10 +11,15 @@ namespace Gem
     /// </summary>
     public static class NetworkRPC
     {
+        // -- Game
         public const string ON_REGISTER_USER = "OnRegisterUser";
         public const string ON_REGISTER_USER_STATUS = "OnRegisterUserStatus";
         public const string ON_UPDATE_PLAYER_LIST = "OnUpdatePlayerList";
         public const string ON_UPDATE_PLAYER_LIST_REQUEST = "OnUpdatePlayerListerRequest";
+        public const string ON_REQUEST_RECEIVE = "OnRequestReceive";
+
+        // -- Authentication Server
+        public const string AUTHENTICATION_REQUEST = "AuthenticationRequest";
 
         public const int STATUS_GOOD_LOGIN = 1;
         public const int STATUS_BAD_HOST = 2;

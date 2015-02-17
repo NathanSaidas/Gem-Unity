@@ -109,5 +109,29 @@ namespace Gem
         public const int NETWORK_DEFAULT_PORT = 25002;
         public const string NETWORK_GAME_TYPE_NAME = "Ancients_Settlers_Pre_Alpha";
 
+
+        public const int NETWORK_AUTHENTICATION_MAX_CONNECTIONS = 64;
+        public const int NETWORK_AUTHENTICATION_DEFAULT_PORT = NETWORK_DEFAULT_PORT;
+        public const string NETWORK_AUTHENTICATION_NAME = "Ancient_Settlers_Authentication_Pre_Alpha";
+        public const int NETWORK_AUTHENTICATION_SERVER_FILE_VERSION = 1;
+        public const string NETWORK_AUTHENTICATION_SERVER_DIRECTORY = "\\Ancients_Settlers_Pre_Alpha\\Authentication\\";
+        public const string NETWORK_AUTHENTICATION_SERVER_FILE = "\\Ancients_Settlers_Pre_Alpha\\Authentication\\Authentication.bin";
+        public const int NETWORK_AUTHENTICATION_SERVER_AUTOSAVE_INTERVAL = 60 * 5; // 5 Mins
+
+
+        public const int NETWORK_AUTHENTICATION_REQUEST_CREATE = 1;
+        public const int NETWORK_AUTHENTICATION_REQUEST_DESTROY = 2;
+        public const int NETWORK_AUTHENTICATION_REQUEST_AUTHENTICATE = 3;
+
+        public const int NETWORK_SUCCESS = 1;
+        public const int NETWORK_BAD_REQUEST = 99;  //Used for Network Requests, Signals the request was invalid and could not be handled by the receiving party.
+        public const int NETWORK_BAD_USERNAME_STRING = 100; //Used for Authentication to catch null/empty strings
+        public const int NETWORK_BAD_PASSWORD_STRING = 101; //Used for Authentication to catch null/empty strings
+        public const int NETWORK_USER_EXISTS = 102;         //Used for Authentication Create
+        public const int NETWORK_INVALID_USERNAME = 103;    //Used for Authentication Authenticate
+        public const int NETWORK_INVALID_PASSWORD = 104;    //Used for Authentication Authenticate
+        public const int NETWORK_INVALID_USERNAME_OR_PASSWORD = 105; //Used for Authentication Athenticate
+        
+
     }
 }

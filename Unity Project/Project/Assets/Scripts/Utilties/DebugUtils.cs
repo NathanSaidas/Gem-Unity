@@ -13,6 +13,12 @@ using UnityEngine;
  */
 #endregion
 
+#region TODO
+/*  February 16 2015 - Nathan Hanlan - Pressing F3(Debug Console Toggle Key) shows/hides the console quickly. This is due to the way events are handled in OnGUI
+ * 
+ */
+#endregion
+
 namespace Gem
 {
     /// <summary>
@@ -479,7 +485,14 @@ namespace Gem
                 }
                 else if(currentKey == m_ShowConsoleKey)
                 {
-                    showHideConsolePressed = true;
+                    ///TODO: Unbreak this.
+                    //DebugUtils.Log(Event.current.rawType);
+                    //if(Event.current.rawType == EventType.KeyDown
+                    //    || Event.current.rawType == EventType.keyDown)
+                    //{
+                    //    showHideConsolePressed = true;
+                    //}
+                    
                 }
                 else if(currentKey == m_LastMessageKey)
                 {

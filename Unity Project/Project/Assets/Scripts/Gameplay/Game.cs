@@ -198,6 +198,8 @@ namespace Gem
 
         private string m_DefaultComment = string.Empty;
 
+        private NetworkConnectionStatus m_NetworkConnectionStatus = NetworkConnectionStatus.Offline;
+
         /// <summary>
         /// This will start the server using the settings specified by the Constants file and m_ServerGameName
         /// 
@@ -464,13 +466,22 @@ namespace Gem
             }
         }
 
+        [RPC]
+        private void OnRequestReceive(int aResult)
+        {
+
+        }
+
         #endregion
 
 
 
 
 
-
+        public static NetworkConnectionStatus networkConnectionStatus
+        {
+            get { return instance != null ? instance.m_NetworkConnectionStatus : NetworkConnectionStatus.Offline; }
+        }
 
         public static GameCache cache
         {
