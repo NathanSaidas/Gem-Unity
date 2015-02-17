@@ -17,9 +17,5 @@ namespace Gem
 
 
 
-        public PlayerIndex player
-        {
-            get { return PlayerIndex.None; }
-        }
     }
 }

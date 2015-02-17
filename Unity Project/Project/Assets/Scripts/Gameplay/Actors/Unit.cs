@@ -117,13 +117,20 @@ namespace Gem
                     float distanceRemaining = Vector3.Distance(transform.position, m_MoveToTarget.transform.position);
                     if(distanceRemaining < m_NavMeshAgent.stoppingDistance)
                     {
-                        m_MoveToTarget = null;
+                        Debug.Log("Reached Destination");
+                        Stop();
                     }
                 }
                 else
                 {
                     if(!m_NavMeshAgent.SetDestination(m_MoveToPosition))
                     {
+                        Stop();
+                    }
+                    float distanceRemaining = Vector3.Distance(transform.position, m_MoveToPosition);
+                    if (distanceRemaining < m_NavMeshAgent.stoppingDistance)
+                    {
+                        Debug.Log("Reached Destination");
                         Stop();
                     }
                 }
@@ -147,10 +154,12 @@ namespace Gem
                             Unit unit = aEvent.context as Unit;
                             if(unit != null)
                             {
+                                Stop();
                                 MoveTo(unit);
                             }
                             else
                             {
+                                Stop();
                                 MoveTo((Vector3)aEvent.context);
                             }
                         }
@@ -158,6 +167,7 @@ namespace Gem
                     break;
                 case ActorEventType.IssueOrderFollow:
                     {
+                        Stop();
                         Follow((Unit)aEvent.context);
                     }
                     break;
@@ -182,6 +192,16 @@ namespace Gem
                         }
                     }
                     break;
+                case ActorEventType.IssueOrderAbilityAction:
+                    {
+                        OnUseAbility((int)aEvent.context);
+                    }
+                    break;
+                case ActorEventType.IssueOrderItemAction:
+                    {
+                        OnUseItem((int)aEvent.context);
+                    }
+                    break;
             }
         }
 
@@ -189,6 +209,9 @@ namespace Gem
         {
             m_NavMeshAgent.Stop();
             m_InTransit = false;
+            m_MoveToTarget = null;
+            m_MoveToPosition = Vector3.zero;
+            m_FollowTarget = null;
         }
 
         private void SetDestination(Vector3 aPoint)
@@ -204,14 +227,17 @@ namespace Gem
         private void Follow(Unit aUnit)
         {
             m_FollowTarget = aUnit;
+            m_InTransit = true;
         }
         private void MoveTo(Unit aUnit)
         {
             m_MoveToTarget = aUnit;
+            m_InTransit = true;
         }
         private void MoveTo(Vector3 aPosition)
         {
             m_MoveToPosition = aPosition;
+            m_InTransit = true;
         }
 
         private void OnSelect(PlayerName aPlayerName)
@@ -225,6 +251,15 @@ namespace Gem
             m_IsSelected = false;
         }
 
+        private void OnUseAbility(int aAbilityIndex )
+        {
+            Debug.Log("Unit Use Ability: " + aAbilityIndex);
+        }
+
+        private void OnUseItem(int aItemIndex)
+        {
+            Debug.Log("Unit Use Item: " + aItemIndex);
+        }
 
     }
 }

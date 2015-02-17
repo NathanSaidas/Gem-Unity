@@ -4,6 +4,8 @@
  */
 #endregion
 
+using UnityEngine;
+
 namespace Gem
 {
     /// <summary>
@@ -62,7 +64,7 @@ namespace Gem
         public const string INVALID_STRING = null;                                      ///Added December,7,2014 - Nathan Hanlan
                                                                                         ///
 
-        public const string GAME_OBJECT_PERSISTENT = "_Persistent";                      ///Added December,7,2014 - Nathan Hanlan
+        public const string GAME_OBJECT_PERSISTENT = "_Persistent";                     ///Added December,7,2014 - Nathan Hanlan
                                                        
         ///The name of the field OnUse in items.                          
         public const string ITEM_DESTROY_ON_USE = "OnUse";
@@ -72,6 +74,7 @@ namespace Gem
         public const string GAME_OBJECT_GAME = "_Game";
         public const string GAME_OBJECT_DEBUG = "_Debug";
         public const string GAME_OBJECT_GAME_SELECTION = "_GameSelection";
+        public const string GAME_OBJECT_UI_GAME = "_UIGame";
 
         public const int MAX_PLAYERS = 8;
         public const int MAX_TEAMS = 8;
@@ -80,6 +83,17 @@ namespace Gem
         public const string TEAM_CITIZENS = "Citizens";
         public const TeamIndex TEAM_ANCIENTS_INDEX = TeamIndex.Team_One;
         public const TeamIndex TEAM_CITIZENS_INDEX = TeamIndex.Team_Two;
+
+        public const int MOUSE_LEFT = 0;
+        public const int MOUSE_RIGHT = 1;
+        public const int MOUSE_MIDDLE = 2;
+
+        public const int INPUT_SELECTION = MOUSE_LEFT;
+        public const int INPUT_ISSUE_ORDER = MOUSE_RIGHT;
+
+        public const KeyCode INPUT_ADD_SELECTION = KeyCode.LeftShift;
+        public const KeyCode INPUT_REMOVE_SELECTION = KeyCode.LeftAlt;
+        public const KeyCode INPUT_STOP = KeyCode.S;
 
     }
 }

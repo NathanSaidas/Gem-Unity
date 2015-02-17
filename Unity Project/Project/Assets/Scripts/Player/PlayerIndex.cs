@@ -1,6 +1,6 @@
 ﻿#region CHANGE LOG
-/*  January, 28, 2015 - Nathan Hanlan - Renamed enum Player to PlayerIndex
- * 
+/*  January  28  2015 - Nathan Hanlan - Renamed enum Player to PlayerIndex
+ *  February 16  2015 - Nathan Hanlan - Removed None and All enums from PlayerIndex. Changed data format to use bitshifting instead to make it more readable.
  */
 #endregion
 
@@ -15,16 +15,14 @@ namespace Gem
     [Flags]
     public enum PlayerIndex
     {
-        None = 0,
-        All = 0xFFFF,
-        Player_One = 1,
-        Player_Two = 2,
-        Player_Three = 4,
-        Player_Four = 8,
-        Player_Five = 16,
-        Player_Six = 32,
-        Player_Seven = 64,
-        Player_Eight = 128,
+        Player_One      = 1 << 0,
+        Player_Two      = 1 << 1,
+        Player_Three    = 1 << 2,
+        Player_Four     = 1 << 3,
+        Player_Five     = 1 << 4,
+        Player_Six      = 1 << 5,
+        Player_Seven    = 1 << 6,
+        Player_Eight    = 1 << 7,
     }
 
 }

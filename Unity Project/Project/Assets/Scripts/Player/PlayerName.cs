@@ -37,7 +37,7 @@ namespace Gem
         {
             m_Username = aUsername;
             m_ScreenName = aScreenName;
-            m_PlayerIndex = PlayerIndex.None;
+            m_PlayerIndex = (PlayerIndex)0;
         }
         public PlayerName(string aUsername, string aScreenName, PlayerIndex aPlayerIndex)
         {

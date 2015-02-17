@@ -30,11 +30,11 @@ namespace Gem
         /// <summary>
         /// A player index definition of all players with trade permissoins
         /// </summary>
-        private PlayerIndex m_TradeMask = PlayerIndex.None;
+        private PlayerIndex m_TradeMask = (PlayerIndex)0;
         /// <summary>
         /// A player index definition of all players who had control permissions of this players units.
         /// </summary>
-        private PlayerIndex m_ControlMask = PlayerIndex.None;
+        private PlayerIndex m_ControlMask = (PlayerIndex)0;
         /// <summary>
         /// A definition of whether or not this Player is an AI player.
         /// </summary>
@@ -143,8 +143,8 @@ namespace Gem
             PlayerInfo player = new PlayerInfo();
             player.name = aPlayerName;
             player.team = aTeam;
-            player.tradeMask = PlayerIndex.None;
-            player.controlMask = PlayerIndex.None;
+            player.tradeMask = (PlayerIndex)0;
+            player.controlMask = (PlayerIndex)0;
             player.isAI = aIsAI;
             player.externalIP = aPlayer.externalIP;
             player.externalPort = aPlayer.externalPort;
@@ -164,8 +164,8 @@ namespace Gem
             PlayerInfo player = new PlayerInfo();
             player.name = aPlayerName;
             player.team = aTeam;
-            player.tradeMask = PlayerIndex.None;
-            player.controlMask = PlayerIndex.None;
+            player.tradeMask = (PlayerIndex)0;
+            player.controlMask = (PlayerIndex)0;
             player.isAI = false;
             player.externalIP = aPlayer.externalIP;
             player.externalPort = aPlayer.externalPort;

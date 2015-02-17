@@ -13,7 +13,10 @@ namespace Gem
         AbilityEffect,
         IssueOrderStop,
         IssueOrderMove,
+        IssueOrderMoveAndAttack,
         IssueOrderFollow,
         IssueOrderWarp,
+        IssueOrderAbilityAction,
+        IssueOrderItemAction
     }
 }
