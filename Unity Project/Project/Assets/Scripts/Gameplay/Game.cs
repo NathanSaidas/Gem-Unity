@@ -132,7 +132,9 @@ namespace Gem
 
         private void Awake()
         {
+            ///Make this run in the background to allow for recieving of network events.
             Application.runInBackground = true;
+            ///Set the singleton instance.
             if(!SetInstance(this))
             {
                 Destroy(this);
@@ -140,7 +142,7 @@ namespace Gem
                 return;
             }
             DontDestroyOnLoad(gameObject);
-
+            ///Initialize coroutine extensions.
             CoroutineEx.InitializeCoroutineExtensions(StartCoroutineEx, StopCoroutineEx);
         }
 
@@ -188,6 +190,38 @@ namespace Gem
         private string m_Comment = string.Empty;
         [SerializeField]
         private int m_PortNumber = 25006;
+
+        /// <summary>
+        /// The name of the lobby name.
+        /// </summary>
+        private string m_ServerGameName = string.Empty;
+
+        private string m_DefaultComment = string.Empty;
+
+        /// <summary>
+        /// This will start the server using the settings specified by the Constants file and m_ServerGameName
+        /// 
+        /// • NETWORK_MAX_CONNECTIONS - (16) A buffer for how many accounts can be logged in at once.
+        /// • NETWORK_DEFAULT_PORT - (25002) The default port number to be used for 
+        /// • NETWORK_GAME_TYPE_NAME - The string name for the types associated with this game. Ancient vs Settlers.
+        /// 
+        /// • m_ServerGameName - A unique name for each server hosted.
+        /// • m_DefaultComment - A string containing additional information about the server. 
+        /// </summary>
+        private void StartServer()
+        {
+            NetworkConnectionError error = Network.InitializeServer(Constants.NETWORK_MAX_CONNECTIONS, Constants.NETWORK_DEFAULT_PORT, !Network.HavePublicAddress());
+            if(error != NetworkConnectionError.NoError)
+            {
+                DebugUtils.LogError(error);
+            }
+            else
+            {
+                MasterServer.RegisterHost(Constants.NETWORK_GAME_TYPE_NAME, m_ServerGameName, m_DefaultComment);
+            }
+        }
+
+
 
         private void OnConnectedToServer()
         {
@@ -237,6 +271,9 @@ namespace Gem
             //TODO: Start a routine to destroy all objects associated with the disconnecting player.
         }
 
+        /// <summary>
+        /// A Unit callback for when the server is initialized.
+        /// </summary>
         private void OnServerInitialized()
         {
             GameCache cache = m_GameCache;

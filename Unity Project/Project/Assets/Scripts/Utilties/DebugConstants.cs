@@ -10,7 +10,10 @@ namespace Gem
     {
         public static readonly string[] ERROR_STRINGS = new string[]
     {
-        "Invalid Error Code",
+        "Invalid Error Code.",
+#region DEFAULTS
+        "Null or empty string is not accepted.",
+#endregion
         "Failed to upload item database.",
         "Failed to download item database.",
         "The path given was invalid.",
@@ -39,6 +42,13 @@ namespace Gem
         "Cannot cast ability, ability is on cooldown.",
         "Cannot cast ability, invalid target.",
 #endregion
+
+#region GAME_CACHE
+        "Game Cache is missing. Possibly no instance of Game in the scene or the game is quitting.",
+        "Game Cache cannot add another entry with the same key",
+        "Game Cache cannot remove entry, entry does not exist",
+        "Game Cache cannot get entry, entry does not exist",
+#endregion
     };
 
         public static string GetError(int aCode)
@@ -66,6 +76,10 @@ namespace Gem
     public enum ErrorCode
     {
         INVALID_CODE,
+        #region DEFAULTS
+        INVALID_STRING,
+        #endregion
+
         ITEM_UPLOAD_FAILED,
         ITEM_DOWNLOAD_FAILED,
         ITEM_INVALID_FILE_PATH,
@@ -75,6 +89,7 @@ namespace Gem
         TEAM_MISSING_TEAM_FOR_SAVE,
         TEAM_MISSING_TEAM_FOR_LOAD,
         SINGLETON_MULTIPLE_INSTANCE,
+
         #region NETWORK
         NETWORK_SERVER_CALL_ON_CLIENT,
         NETWORK_CLIENT_CALL_ON_SERVER,
@@ -92,6 +107,13 @@ namespace Gem
         #region ABILITY
         CAST_FAILED_COOLDOWN,
         CAST_FAILED_INVALID_TARGET,
+        #endregion
+
+        #region GAME_CACHE
+        GAME_CACHE_MISSING,
+        GAME_CACHE_ADD_FAIL,
+        GAME_CACHE_REMOVE_FAIL,
+        GAME_CACHE_GET_FAIL,
         #endregion
     }
 }

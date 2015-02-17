@@ -70,20 +70,27 @@ namespace Gem
         public const string ITEM_DESTROY_ON_USE = "OnUse";
 
 
+        // -- Game Object Name Constants
         public const string GAME_OBJECT_ACTOR_MANAGER = "_ActorManager";
         public const string GAME_OBJECT_GAME = "_Game";
         public const string GAME_OBJECT_DEBUG = "_Debug";
         public const string GAME_OBJECT_GAME_SELECTION = "_GameSelection";
         public const string GAME_OBJECT_UI_GAME = "_UIGame";
 
-        public const int MAX_PLAYERS = 8;
-        public const int MAX_TEAMS = 8;
 
+        // -- Team and Player Constants
+
+        public const int MAX_PLAYERS = 8;
+        public const int MAX_TEAMS = 2;
+
+        
         public const string TEAM_ANCIENTS = "Ancients";
         public const string TEAM_CITIZENS = "Citizens";
         public const TeamIndex TEAM_ANCIENTS_INDEX = TeamIndex.Team_One;
         public const TeamIndex TEAM_CITIZENS_INDEX = TeamIndex.Team_Two;
 
+
+        // -- Input Constants
         public const int MOUSE_LEFT = 0;
         public const int MOUSE_RIGHT = 1;
         public const int MOUSE_MIDDLE = 2;
@@ -94,6 +101,13 @@ namespace Gem
         public const KeyCode INPUT_ADD_SELECTION = KeyCode.LeftShift;
         public const KeyCode INPUT_REMOVE_SELECTION = KeyCode.LeftAlt;
         public const KeyCode INPUT_STOP = KeyCode.S;
+
+        // -- Network Constants
+
+        public const int NETWORK_MAX_CONNECTIONS = 16;
+        public const int NETWORK_MAX_PLAYERS = MAX_PLAYERS;
+        public const int NETWORK_DEFAULT_PORT = 25002;
+        public const string NETWORK_GAME_TYPE_NAME = "Ancients_Settlers_Pre_Alpha";
 
     }
 }
