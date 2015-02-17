@@ -134,5 +134,38 @@ namespace Gem
         public const int NETWORK_INVALID_USERNAME_OR_PASSWORD = 105; //Used for Authentication Athenticate
         
 
+        public static string ParseNetworkErrorCode(int aCode)
+        {
+            string result = "Unknown Error";
+            switch(aCode)
+            {
+                case NETWORK_SUCCESS:
+                    result = "Success";
+                    break;
+                case NETWORK_BAD_REQUEST:
+                    result = "Bad Request";
+                    break;
+                case NETWORK_BAD_USERNAME_STRING:
+                    result = "Bad Username String";
+                    break;
+                case NETWORK_BAD_PASSWORD_STRING:
+                    result = "Bad Password String";
+                    break;
+                case NETWORK_USER_EXISTS:
+                    result = "User with that name already exists";
+                    break;
+                case NETWORK_INVALID_USERNAME:
+                    result = "Invalid username entered";
+                    break;
+                case NETWORK_INVALID_PASSWORD:
+                    result = "Invalid password entered";
+                    break;
+                case NETWORK_INVALID_USERNAME_OR_PASSWORD:
+                    result = "Invalid username or password entered";
+                    break;
+            }
+            return result;
+        }
+
     }
 }

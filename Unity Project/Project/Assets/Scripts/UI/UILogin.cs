@@ -34,7 +34,11 @@ namespace Gem
 
         private void OnRequestComplete(int aResult)
         {
-
+            if(aResult != Constants.NETWORK_SUCCESS)
+            {
+                string result = Constants.ParseNetworkErrorCode(aResult);
+                Game.ShowErrorWindow(result);
+            }
         }
     }
 }

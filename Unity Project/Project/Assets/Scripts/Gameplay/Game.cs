@@ -2,6 +2,9 @@
 /* January, 28, 2015 - Nathan Hanlan - Implementing singleton pattern into the game class.
  * January, 28, 2015 - Nathan Hanlan - Implementing game cache information into the game class.
  * January, 29, 2015 - Nathan Hanlan - Implemented basic Network Lobby functionality. Should be able to Register Users.
+ * February, 17, 2015 - Nathan Hanlan - Implemented Authenetication server support.
+ * February, 17, 2015 - Nathan Hanlan - Implemented UIErrorWindow support. See ShowErrorWindow method.
+ * 
  */
 #endregion
 
@@ -128,7 +131,11 @@ namespace Gem
         private NetworkStatus m_NetworkStatus = NetworkStatus.Offline;
         [SerializeField]
         private List<GameObject> m_PrefabDatabase = new List<GameObject>();
-
+        /// <summary>
+        /// The error window prefab to use to display in the game.
+        /// </summary>
+        [SerializeField]
+        private GameObject m_ErrorWindowPrefab = null;
 
         private void Awake()
         {
@@ -584,6 +591,21 @@ namespace Gem
 
 
         #endregion
+
+        /// <summary>
+        /// Opens up the UIErrorWindow and shows the message.
+        /// There can only be one error window open at a time.
+        /// </summary>
+        /// <param name="aMessage">The message to send.</param>
+        public static void ShowErrorWindow(string aMessage)
+        {
+            if(UIErrorWindow.current == null)
+            {
+                GameObject obj = (GameObject)Instantiate(instance.m_ErrorWindowPrefab);
+                UIErrorWindow window = obj.GetComponent<UIErrorWindow>();
+                window.SetText(aMessage);
+            }
+        }
 
 
 
