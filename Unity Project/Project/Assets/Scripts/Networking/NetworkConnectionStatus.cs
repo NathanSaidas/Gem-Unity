@@ -13,6 +13,7 @@ namespace Gem
         Offline,
         // -- Authentication
         ConnectingToAuthentication,
+        ConnectedToAuthentication,
         AuthenticatingAccount,
         AuthenticationSuccessful,
         AuthenticationUnsuccessful,

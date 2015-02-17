@@ -118,7 +118,8 @@ namespace Gem
         public const string NETWORK_AUTHENTICATION_SERVER_FILE = "\\Ancients_Settlers_Pre_Alpha\\Authentication\\Authentication.bin";
         public const int NETWORK_AUTHENTICATION_SERVER_AUTOSAVE_INTERVAL = 60 * 5; // 5 Mins
 
-
+        public const int NETWORK_AUTHENTICATION_REQUEST_INVALID = INVALID_INT;
+        public const int NETWORK_AUTHENTICATION_REQUEST_PENDING = 0;
         public const int NETWORK_AUTHENTICATION_REQUEST_CREATE = 1;
         public const int NETWORK_AUTHENTICATION_REQUEST_DESTROY = 2;
         public const int NETWORK_AUTHENTICATION_REQUEST_AUTHENTICATE = 3;

@@ -22,7 +22,18 @@ namespace Gem
             string username = m_Username.text;
             string password = m_Password.text;
 
+            if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                DebugUtils.LogError("Cannot login with invalid username / password");
+                return;
+            }
+
             //TODO: Enter username / password to game for logging in.
+            Game.SendAuthenticationServerRequest(Constants.NETWORK_AUTHENTICATION_REQUEST_AUTHENTICATE, username, password, OnRequestComplete);
+        }
+
+        private void OnRequestComplete(int aResult)
+        {
 
         }
     }

@@ -643,10 +643,10 @@ namespace Gem
         /// <summary>
         /// Get / Set the processor of the console.
         /// </summary>
-        public ICommandProcessor processor
+        public static ICommandProcessor processor
         {
-            get { return m_Processor; }
-            set { m_Processor = value; }
+            get { return instance == null ? null : instance.m_Processor; }
+            set { if (instance != null) { instance.m_Processor = value; } }
         }
 
 

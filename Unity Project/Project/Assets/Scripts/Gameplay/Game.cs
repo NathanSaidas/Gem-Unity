@@ -197,9 +197,10 @@ namespace Gem
         private string m_ServerGameName = string.Empty;
 
         private string m_DefaultComment = string.Empty;
-
+        [SerializeField]
         private NetworkConnectionStatus m_NetworkConnectionStatus = NetworkConnectionStatus.Offline;
 
+        private AuthenticationRequest m_Request = null;
         /// <summary>
         /// This will start the server using the settings specified by the Constants file and m_ServerGameName
         /// 
@@ -227,8 +228,19 @@ namespace Gem
 
         private void OnConnectedToServer()
         {
-            m_NetworkStatus = NetworkStatus.MatchMakingPeer;
-            SendRegisterUser();
+            if(m_NetworkConnectionStatus == NetworkConnectionStatus.ConnectingToAuthentication)
+            {
+                ///If we've connected to the authentication server... Make our request
+                DebugUtils.Log("Making Authentication Request " + m_Request.request);
+                networkView.RPC(NetworkRPC.AUTHENTICATION_REQUEST, RPCMode.Server, m_Request.request, m_Request.username, m_Request.password);
+                m_NetworkConnectionStatus = NetworkConnectionStatus.ConnectedToAuthentication;
+            }
+            else
+            {
+                m_NetworkStatus = NetworkStatus.MatchMakingPeer;
+                SendRegisterUser();
+            }
+            
         }
         private void OnDisconnectedFromServer(NetworkDisconnection aInfo)
         {
@@ -466,11 +478,110 @@ namespace Gem
             }
         }
 
+        /// <summary>
+        /// An RPC callback to handle requests with the authentication server.
+        /// </summary>
+        /// <param name="aResult">The code for the result of the request</param>
         [RPC]
         private void OnRequestReceive(int aResult)
         {
-
+            if(m_NetworkConnectionStatus != NetworkConnectionStatus.ConnectedToAuthentication)
+            {
+                DebugUtils.LogError("Network Connection was in a bad state");
+            }
+            DebugUtils.Log("Authentication Server Replied with: " + aResult);
+            if(m_Request != null && m_Request.callback != null)
+            {
+                m_Request.callback.Invoke(aResult);
+            }
+            Network.Disconnect();
+            m_Request = null;
+            m_NetworkConnectionStatus = NetworkConnectionStatus.Offline;
         }
+
+        public static void SendAuthenticationServerRequest(int aRequest, string aUsername, string aPassword, AuthenticationRequest.Callback aCallback)
+        {
+            Debug.Log("SendAuthenticationServerRequest");
+            ///Only One Request can made at a time.
+            if(instance != null)
+            {
+                if(instance.m_Request != null)
+                {
+                    DebugUtils.LogError("Cannot send multiple requests at a time");
+                    return;
+                }
+                if(networkConnectionStatus == NetworkConnectionStatus.Offline)
+                {
+                    AuthenticationRequest request = new AuthenticationRequest();
+                    request.request = aRequest;
+                    request.username = aUsername;
+                    request.password = aPassword;
+                    request.callback = aCallback;
+                    instance.m_Request = request;
+                    instance.ConnectToAuthenticationServer();
+                }
+                else
+                {
+                    DebugUtils.Log("Cannot do authentication requests in this state");
+                }
+            }
+        }
+
+        private void ConnectToAuthenticationServer()
+        {
+            if(m_NetworkConnectionStatus == NetworkConnectionStatus.Offline)
+            {
+                StartCoroutine(AuthenticationServerConnectRoutine());
+            }
+            else
+            {
+                //Cannot connect. Already passed the pipeline.
+            }
+        }
+
+        private IEnumerator<YieldInstruction> AuthenticationServerConnectRoutine()
+        {
+            MasterServer.RequestHostList(Constants.NETWORK_GAME_TYPE_NAME);
+            HostData[] hostData = null;
+            float timeStart = Time.time;
+            bool searching = true;
+            while (searching)
+            {
+                yield return new WaitForSeconds(0.3f);
+                float deltaTime = Time.time - timeStart;
+                hostData = MasterServer.PollHostList();
+                if (hostData != null)
+                {
+                    foreach (HostData host in hostData)
+                    {
+                        if (host.gameName == Constants.NETWORK_AUTHENTICATION_NAME)
+                        {
+                            ///Wait Connection to Authentication.
+                            DebugUtils.Log("Waiting for the connection with the Authenticataion Server");
+                            m_NetworkConnectionStatus = NetworkConnectionStatus.ConnectingToAuthentication;
+                            NetworkConnectionError error = Network.Connect(host);
+                            if(error != NetworkConnectionError.NoError)
+                            {
+                                Debug.LogError(error);
+                            }
+                            searching = false;
+                            break;
+                        }
+                    }
+
+                }
+                if(deltaTime > 3.0f)
+                {
+
+                    Debug.Log("Timed Out");
+                    OnRequestReceive(Constants.NETWORK_BAD_REQUEST);
+                    m_Request = null;
+                    break;
+                }
+            }
+        }
+
+
 
         #endregion
 

@@ -30,19 +30,47 @@ namespace Gem
 
     /// </summary>
     [RequireComponent(typeof(NetworkView))]
-    public class AuthenticationServer : MonoBehaviour
-    { 
+    public class AuthenticationServer : MonoBehaviour , ICommandProcessor
+    {
+        [SerializeField]
+        private bool m_MakeCommandProcessor = false;
+        [SerializeField]
+        private bool m_StartServerOnLoad = false;
+
 
         private Dictionary<string, Account> m_Accounts = new Dictionary<string, Account>();
         private bool m_IsDirty = false; //Whether or not to save the server.
 
         private float m_CurrentTime = 0.0f;
 
+
+        private bool m_LogConnections = false;
+
+
+
         private void Start()
         {
             Application.runInBackground = true;
             LoadData();
             m_CurrentTime = Constants.NETWORK_AUTHENTICATION_SERVER_AUTOSAVE_INTERVAL;
+
+            if(m_MakeCommandProcessor)
+            {
+                DebugUtils.processor = this;
+            }
+            if(m_StartServerOnLoad)
+            {
+                StartServer();
+            }
+            
+        }
+
+        private void OnDestroy()
+        {
+            if(m_StartServerOnLoad)
+            {
+                StopServer(true);
+            }
         }
 
         private void Update()
@@ -54,6 +82,23 @@ namespace Gem
                 SetDirty();
             }
         }
+
+        private void OnPlayerConnected(NetworkPlayer aPlayer)
+        {
+            if(m_LogConnections)
+            {
+                DebugUtils.Log("Player Connected: " + aPlayer.externalIP);
+            }
+        }
+
+        private void OnPlayerDisconnected(NetworkPlayer aPlayer)
+        {
+            if(m_LogConnections)
+            {
+                DebugUtils.Log("Player Disconnected: " + aPlayer.externalIP);
+            }
+        }
+
         /// <summary>
         /// Starts the server up.
         /// </summary>
@@ -61,7 +106,7 @@ namespace Gem
         {
             Network.InitializeSecurity();
             NetworkConnectionError error = Network.InitializeServer(Constants.NETWORK_AUTHENTICATION_MAX_CONNECTIONS, Constants.NETWORK_AUTHENTICATION_DEFAULT_PORT, !Network.HavePublicAddress());
-            if(error != NetworkConnectionError.NoError)
+            if(error == NetworkConnectionError.NoError)
             {
                 MasterServer.RegisterHost(Constants.NETWORK_GAME_TYPE_NAME, Constants.NETWORK_AUTHENTICATION_NAME);
             }
@@ -77,12 +122,12 @@ namespace Gem
         /// <param name="aSave">Whether or not to save the server before stopping.</param>
         private void StopServer(bool aSave)
         {
-            if(aSave)
+            if (Network.isServer)
             {
-                SaveData();
-            }
-            if(Network.isServer)
-            {
+                if (aSave)
+                {
+                    SaveData();
+                }
                 MasterServer.UnregisterHost();
                 Network.Disconnect();
             }
@@ -364,8 +409,196 @@ namespace Gem
             SaveData();
             m_IsDirty = false;
         }
-        
 
+
+        #region COMMAND LIST
+        // • clear
+        // • isonline
+        // • create <username> <password>
+        // • delete <username> <password>
+        // • authenticate <username> <password>
+        // • save
+        // • load
+        // • logconnections <on/off>
+        // • start
+        // • stop [opt]<true/false>
+
+        #endregion
+
+        public void Process(List<string> aWords, List<string> aLowerWords)
+        {
+            if(aLowerWords == null || aLowerWords.Count == 0)
+            {
+                return;
+            }
+            switch(aLowerWords[0])
+            {
+                case "clear":
+                    DebugUtils.ConsoleClear();
+                    break;
+                case "help":
+                case "?":
+                case "cmd":
+                case "command":
+                    {
+                        DebugUtils.Log("--- List Of Available Commands ---");
+                        DebugUtils.Log("clear");
+                        DebugUtils.Log("isonline");
+                        DebugUtils.Log("create <username> <password>");
+                        DebugUtils.Log("delete <username> <password>");
+                        DebugUtils.Log("authenticate <username> <password>");
+                        DebugUtils.Log("save");
+                        DebugUtils.Log("load");
+                        DebugUtils.Log("logconnections <on/off>");
+                        DebugUtils.Log("start");
+                        DebugUtils.Log("stop [opt]<true/false>");
+                    }
+                    break;
+                case "isonline":
+                    {
+                        if(Network.isServer)
+                        {
+                            DebugUtils.Log("Server is online");
+                        }
+                        else
+                        {
+                            DebugUtils.Log("Server is offline");
+                        }
+                    }
+                    break;
+                case "save":
+                    {
+                        SetDirty();
+                    }
+                    break;
+                case "load":
+                    {
+                        LoadData();
+                    }
+                    break;
+                case "authenticate":
+                    {
+                        if(aWords.Count >= 3)
+                        {
+                            int result = Authenticate(aWords[1], aWords[2]);
+                            PrintResult(result);
+                        }
+                    }
+                    break;
+                case "create":
+                    {
+                        if (aWords.Count >= 3)
+                        {
+                            int result = AddAccount(aWords[1], aWords[2]);
+                            PrintResult(result);
+                        }
+                    }
+                    break;
+                case "delete":
+                    {
+                        if (aWords.Count >= 3)
+                        {
+                            int result = RemoveAccount(aWords[1], aWords[2]);
+                            PrintResult(result);
+                        }
+                    }
+                    break;
+                case "logconnections":
+                    {
+                        if(aLowerWords.Count >= 2)
+                        {
+                            if(aLowerWords[1] == "on")
+                            {
+                                m_LogConnections = true;
+                            }
+                            else if(aLowerWords[1] == "off")
+                            {
+                                m_LogConnections = false;
+                            }
+                            else if(aLowerWords[1] == "?")
+                            {
+                                if(m_LogConnections)
+                                {
+                                    DebugUtils.Log("Logging Connections is On");
+                                }
+                                else
+                                {
+                                    DebugUtils.Log("Logging Connections is Off");
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case "start":
+                    {
+                        if(!Network.isServer)
+                        {
+                            StartServer();
+                        }
+                    }
+                    break;
+                case "stop":
+                    {
+                        if(Network.isServer)
+                        {
+                            if(aLowerWords.Count > 1)
+                            {
+                                if(aLowerWords[1] == "true")
+                                {
+                                    StopServer(true);
+                                }
+                                else if(aLowerWords[1] == "false")
+                                {
+                                    StopServer(false);
+                                }
+                                else
+                                {
+                                    StopServer(true);
+                                }
+                            }
+                            else
+                            {
+                                StopServer(true);
+                            }
+                        }
+                        Application.Quit();
+                    }
+                    break;
+                
+            }
+        }
+
+        /// <summary>
+        /// Log out a network request result to the console.
+        /// </summary>
+        /// <param name="aResult">The result to be logged out.</param>
+        private void PrintResult(int aResult)
+        {
+            switch(aResult)
+            {
+                case Constants.NETWORK_BAD_USERNAME_STRING:
+                    DebugUtils.Log("Bad Username String");
+                    break;
+                case Constants.NETWORK_BAD_PASSWORD_STRING:
+                    DebugUtils.Log("Bad Password String");
+                    break;
+                case Constants.NETWORK_BAD_REQUEST:
+                    DebugUtils.Log("Bad Request");
+                    break;
+                case Constants.NETWORK_INVALID_PASSWORD:
+                    DebugUtils.Log("Invalid Password");
+                    break;
+                case Constants.NETWORK_INVALID_USERNAME:
+                    DebugUtils.Log("Invalid Username");
+                    break;
+                case Constants.NETWORK_INVALID_USERNAME_OR_PASSWORD:
+                    DebugUtils.Log("Invalid username or password");
+                    break;
+                case Constants.NETWORK_USER_EXISTS:
+                    DebugUtils.Log("User Exists");
+                    break;
+            }
+        }
     }
 
 }
